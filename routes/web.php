@@ -48,5 +48,18 @@ Route::middleware(['auth:citizen'])->prefix('/')->name('citizen.')->controller(C
 });
 
 // Surat 
+
+
 Route::get('/layanan-surat', [SuratController::class, 'create'])->name('citizen.layanan-surat')->middleware('auth:citizen');
+Route::get('/layanan-surat/buat-surat/izin-usaha', [SuratController::class, 'izinUsahaView'])->name('citizen.izin-usaha')->middleware('auth:citizen');
+Route::get('/layanan-surat/buat-surat/kelahiran', [SuratController::class, 'kelahiranView'])->name('citizen.kelahiran')->middleware('auth:citizen');
+Route::get('/layanan-surat/buat-surat/kematian', [SuratController::class, 'kematianView'])->name('citizen.kematian')->middleware('auth:citizen');
+Route::get('/layanan-surat/buat-surat/pindah-dom', [SuratController::class, 'pindahDomisiliView'])->name('citizen.pindah-dom')->middleware('auth:citizen');
+Route::get('/layanan-surat/buat-surat/jaminan-kesehatan', [SuratController::class, 'jaminanKesehatanView'])->name('citizen.jaminan-kesehatan')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat', [SuratController::class, 'buatSurat'])->name('citizen.buat-surat')->middleware('auth:citizen');
+Route::post('/layanan-surat/buat', [SuratController::class, 'upload'])->name('citizen.buat-surat.submit')->middleware('auth:citizen');
+
+
+//Management Surat Admin
+Route::get('/admin/management-surat/{id}/detail', [AdminController::class, 'showDetail'])->name('admin.detail-surat');
+Route::get('/admin/management-surat/{id}/generate', [AdminController::class, 'generateSurat'])->name('surat.generate');

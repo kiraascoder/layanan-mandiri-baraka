@@ -39,7 +39,7 @@
                     </div>
                     <!-- Remember Me -->
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+
 
                         <a href="{{ route('admin.login') }}">Login sebagai Admin</a>
                     </div>

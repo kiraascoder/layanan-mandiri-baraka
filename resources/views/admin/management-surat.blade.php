@@ -23,23 +23,23 @@
                         <th scope="col" class="px-6 py-3">
                             Status Surat
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Detail
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">
-                        </td>
-                        <td class="px-6 py-4">
-
-                        </td>
-                        <td class="px-6 py-4">
-
-                        </td>
-                        <td class="px-6 py-4">
-
-                        </td>
-                    </tr>
+                    @foreach ($surats as $surat)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4">{{ $surat->citizen->nik }}</td>
+                            <td class="px-6 py-4">{{ $surat->citizen->name }} </td>
+                            <td class="px-6 py-4 capitalize">{{ str_replace('_', ' ', $surat->jenis_surat) }}</td>
+                            <td class="px-6 py-4 capitalize">{{ $surat->status ?? '-' }}</td>
+                            <td class="px-6 py-4 "><a href="{{ route('admin.detail-surat', $surat->id) }}"
+                                    class="text-blue-500 hover:underline">Lihat Detail</a></td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

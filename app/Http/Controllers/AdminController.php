@@ -6,7 +6,7 @@ use App\Models\Surat;
 use Illuminate\Http\Request;
 use App\Models\Citizen;
 use Illuminate\Support\Facades\Hash;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -30,8 +30,8 @@ class AdminController extends Controller
 
     public function showSurat()
     {
-        $requests = Surat::with('citizen')->get();
-        return view('admin.management-surat', compact('requests'));
+        $surats = Surat::all();
+        return view('admin.management-surat', compact('surats'));
     }
 
     public function showMasukan()
@@ -83,7 +83,6 @@ class AdminController extends Controller
     }
     public function update(Request $request, Citizen $citizen)
     {
-
         $request->validate([
             'name' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
@@ -122,5 +121,22 @@ class AdminController extends Controller
             return redirect()->route('admin.daftar-penduduk')->with('success', 'Penduduk berhasil dihapus.');
         }
         return redirect()->route('admin.daftar-penduduk')->with('error', 'Penduduk tidak ditemukan.');
+    }
+    public function showDetail($id)
+    {
+        $surat = Surat::with('citizen')->findOrFail($id);
+        return view('admin.detail-surat', compact('surat'));
+    }
+
+    public function generateSurat($id)
+    {
+        $surat = Surat::with('citizen')->findOrFail($id);
+
+        $pdf = Pdf::loadView('template.surat-test', [
+            'citizen' => $surat->citizen,
+            'requestModel' => $surat
+        ]);
+
+        return $pdf->download('surat_' . $surat->citizen->nik . '.pdf');
     }
 }

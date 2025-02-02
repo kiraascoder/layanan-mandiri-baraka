@@ -68,7 +68,7 @@
             <!-- Burger Bar Icon -->
             <button class="text-3xl cursor-pointer md:hidden w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
                 aria-label="Toggle Navigation Menu" aria-expanded="false" id="menu-toggle">
-                <img src="{{ asset('img/icon/burger-bar.png') }}" alt="Toggle Navigation Menu">
+
             </button>
         </div>
     </nav>
@@ -84,6 +84,49 @@
                 toggleButton.setAttribute('aria-expanded', !expanded);
                 navLinks.classList.toggle('top-[9%]');
             });
+        });
+        document.getElementById('surat_type').addEventListener('change', function() {
+            let selectedValue = this.value;
+
+            // Sembunyikan semua form
+            document.getElementById('form_izin_usaha').style.display = 'none';
+            document.getElementById('form_kelahiran').style.display = 'none';
+            document.getElementById('form_kematian').style.display = 'none';
+            document.getElementById('form_pindah_domisili').style.display = 'none';
+            document.getElementById('form_jaminan_kesehatan').style.display = 'none';
+
+            // Hapus atribut required dari semua input
+            document.querySelectorAll('input[required], select[required]').forEach(function(input) {
+                input.removeAttribute('required');
+            });
+
+            // Tampilkan form yang sesuai dan tambahkan required ke input yang relevan
+            if (selectedValue === 'izin_usaha') {
+                document.getElementById('form_izin_usaha').style.display = 'block';
+                document.querySelectorAll('#form_izin_usaha input').forEach(function(input) {
+                    input.setAttribute('required', true);
+                });
+            } else if (selectedValue === 'kelahiran') {
+                document.getElementById('form_kelahiran').style.display = 'block';
+                document.querySelectorAll('#form_kelahiran input').forEach(function(input) {
+                    input.setAttribute('required', true);
+                });
+            } else if (selectedValue === 'kematian') {
+                document.getElementById('form_kematian').style.display = 'block';
+                document.querySelectorAll('#form_kematian input').forEach(function(input) {
+                    input.setAttribute('required', true);
+                });
+            } else if (selectedValue === 'pindah_domisili') {
+                document.getElementById('form_pindah_domisili').style.display = 'block';
+                document.querySelectorAll('#form_pindah_domisili input').forEach(function(input) {
+                    input.setAttribute('required', true);
+                });
+            } else if (selectedValue === 'jaminan_kesehatan') {
+                document.getElementById('form_jaminan_kesehatan').style.display = 'block';
+                document.querySelectorAll('#form_jaminan_kesehatan input').forEach(function(input) {
+                    input.setAttribute('required', true);
+                });
+            }
         });
     </script>
 </header>

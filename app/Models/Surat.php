@@ -9,7 +9,7 @@ class Surat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['citizen_id', 'surat_type', 'status', 'rejection_reason', 'generated_file_path'];
+    protected $fillable = ['citizen_id', 'jenis_surat', 'no_hp', 'file_persyaratan', 'status'];
 
     public function citizen()
     {
