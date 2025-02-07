@@ -37,13 +37,76 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Form untuk Update Status Surat -->
+            <div class="mt-6">
+                <form action="{{ route('admin.surat.updateStatus', $surat->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <label for="status" class="block text-sm font-medium text-gray-700">Pilih Status:</label>
+                    <select name="status" id="status"
+                        class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                        <option value="pending" {{ $surat->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="diproses" {{ $surat->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
+                        <option value="selesai" {{ $surat->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="ditolak" {{ $surat->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                    </select>
+
+                    <!-- Alasan Reject jika status adalah ditolak -->
+                    <div id="alasan_reject_div" class="mt-4" style="display: none;">
+                        <label for="alasan_reject" class="block text-sm font-medium text-gray-700">Alasan Penolakan:</label>
+                        <textarea name="alasan_reject" id="alasan_reject" rows="3"
+                            class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">{{ old('alasan_reject', $surat->alasan_reject) }}</textarea>
+                    </div>
+
+                    <button type="submit" id="updateStatusButton"
+                        class="mt-4 inline-block px-4 py-2 bg-[#3E7B27] text-white rounded-md hover:bg-gray-600">
+                        Update Status
+                    </button>
+                </form>
+            </div>
+
+            <!-- Upload Surat -->
+            <div id="uploadSuratDiv" class="mt-4" style="display: block;">
+                <form action="{{ route('admin.surat.upload', $surat->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="file_surat" class="block text-sm font-medium text-gray-700">Upload Surat:</label>
+                    <input type="file" name="surat_selesai" id="surat_selesai"
+                        class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:bg-gray-50 file:hover:bg-gray-100">
+
+                    <button type="submit"
+                        class="inline-block px-4 py-2 bg-[#3E7B27] text-white rounded-md hover:bg-gray-600 mt-4">
+                        Upload Surat
+                    </button>
+                </form>
+            </div>
+
             <div class="mt-4">
-                <a href="{{ route('surat.generate', ['id' => $surat->id]) }}"
-                    class="inline-block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                <a href="{{ route('admin.surat.generate', ['id' => $surat->id]) }}"
+                    class="inline-block px-4 py-2 bg-[#3E7B27] text-white rounded-md hover:bg-gray-600">
                     Buat Surat
                 </a>
             </div>
-
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusSelect = document.getElementById('status');
+            const alasanRejectDiv = document.getElementById('alasan_reject_div');
+            const updateStatusButton = document.getElementById('updateStatusButton');
+
+            function toggleAlasanReject() {
+                alasanRejectDiv.style.display = (statusSelect.value === 'ditolak') ? 'block' : 'none';
+            }
+            statusSelect.addEventListener('change', function() {
+                toggleAlasanReject();
+
+            });
+
+            toggleAlasanReject();
+            hideUpdateStatusButton();
+        });
+    </script>
 @endsection

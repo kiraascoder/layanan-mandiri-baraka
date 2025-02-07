@@ -20,17 +20,21 @@ Route::post('/admin/logout', function () {
     return redirect('/admin/login');
 })->name('logout')->middleware('admin');
 
-// Crud Penduduk Middleware (Admin Only)
+
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/daftar-penduduk', [AdminController::class, 'showDaftarPenduduk'])->name('daftar-penduduk');
     Route::get('/management-surat', [AdminController::class, 'showSurat'])->name('management-surat');
+    Route::get('/management-surat/{id}/detail', [AdminController::class, 'showDetail'])->name('detail-surat');
+    Route::get('/management-surat/{id}/generate', [AdminController::class, 'generateSurat'])->name('surat.generate');
+    Route::put('/management-surat/{id}/update', [AdminController::class, 'updateStatus'])->name('surat.updateStatus');
+    Route::post('/management-surat/{id}/upload', [AdminController::class, 'uploadSurat'])->name('surat.upload');
     Route::get('/masukan', [AdminController::class, 'showMasukan'])->name('masukan');
     Route::prefix('daftar-penduduk')->name('daftar-penduduk.')->group(function () {
         Route::get('/tambah-penduduk', [AdminController::class, 'create'])->name('tambah-penduduk');
         Route::post('/tambah-penduduk', [AdminController::class, 'storeCitizen'])->name('tambah.submit');
         Route::get('/edit-penduduk/{nik}', [AdminController::class, 'edit'])->name('edit-penduduk');
-        Route::put('/edit-penduduk/{nik}', [AdminController::class, 'update'])->name('edit-penduduk.submit');
+        Route::put('/edit-penduduk/{nik}/edit', [AdminController::class, 'update'])->name('edit-penduduk.submit');
         Route::delete('/hapus-penduduk/{nik}', [AdminController::class, 'destroy'])->name('destroy');
     });
 });
@@ -45,12 +49,14 @@ Route::middleware(['auth:citizen'])->prefix('/')->name('citizen.')->controller(C
     Route::get('saran', 'viewSaran')->name('beri-saran');
     Route::get('informasi-tani', 'viewTani')->name('informasi-tani');
     Route::post('logout', 'logout')->name('logout');
+    Route::get('/saran/beri-saran', [CitizenController::class, 'beriSaranView'])->name('beri-saran.form');
+    Route::post('/saran/beri-saran', [CitizenController::class, 'beriSaran'])->name('beri-saran.submit');
 });
 
 // Surat 
-
-
 Route::get('/layanan-surat', [SuratController::class, 'create'])->name('citizen.layanan-surat')->middleware('auth:citizen');
+Route::get('/layanan-surat/{id}/detail', [SuratController::class, 'detailCitizenSurat'])->name('citizen.detail-surat')->middleware('auth:citizen');
+Route::get('/layanan-surat/{id}/download/', [SuratController::class, 'downloadSurat'])->name('citizen.download.surat')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat/izin-usaha', [SuratController::class, 'izinUsahaView'])->name('citizen.izin-usaha')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat/kelahiran', [SuratController::class, 'kelahiranView'])->name('citizen.kelahiran')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat/kematian', [SuratController::class, 'kematianView'])->name('citizen.kematian')->middleware('auth:citizen');
@@ -58,8 +64,3 @@ Route::get('/layanan-surat/buat-surat/pindah-dom', [SuratController::class, 'pin
 Route::get('/layanan-surat/buat-surat/jaminan-kesehatan', [SuratController::class, 'jaminanKesehatanView'])->name('citizen.jaminan-kesehatan')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat', [SuratController::class, 'buatSurat'])->name('citizen.buat-surat')->middleware('auth:citizen');
 Route::post('/layanan-surat/buat', [SuratController::class, 'upload'])->name('citizen.buat-surat.submit')->middleware('auth:citizen');
-
-
-//Management Surat Admin
-Route::get('/admin/management-surat/{id}/detail', [AdminController::class, 'showDetail'])->name('admin.detail-surat');
-Route::get('/admin/management-surat/{id}/generate', [AdminController::class, 'generateSurat'])->name('surat.generate');

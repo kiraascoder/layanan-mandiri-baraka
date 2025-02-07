@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Citizen;
+use App\Models\Saran;
 
 class CitizenController extends Controller
 {
@@ -44,7 +45,11 @@ class CitizenController extends Controller
     }
     public function viewSaran()
     {
-        return view('citizens.beri-saran');
+        $saran = Saran::with('citizen')
+            ->where('citizen_id', auth()->user()->id)
+            ->get();
+
+        return view('citizens.beri-saran', compact('saran'));
     }
     public function viewTani()
     {
@@ -56,5 +61,26 @@ class CitizenController extends Controller
     {
         Auth::guard('citizen')->logout();
         return redirect('/login')->with('success', 'Logout berhasil!');
+    }
+
+
+    public function beriSaranView()
+    {
+        return view('citizens.form-saran');
+    }
+
+    public function beriSaran(Request $request)
+    {
+        $request->validate([
+            'isi_saran' => 'required|string|max:1000',
+        ]);
+        $user = auth()->user();
+        $citizen = Citizen::where('nik', $user->nik)->first();
+        Saran::create([
+            'citizen_id' => $citizen->id,
+            'isi_saran' => $request->isi_saran,
+        ]);
+
+        return redirect()->route('citizen.beri-saran')->with('success', 'Saran berhasil dikirim.');
     }
 }

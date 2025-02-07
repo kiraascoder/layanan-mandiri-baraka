@@ -3,158 +3,150 @@
 @section('title', 'Edit Penduduk')
 
 @section('content')
-    <div class="container mt-5">
-        <h2 class="mb-4">Edit Penduduk</h2>
+    <div class="container mx-auto mt-4 p-6 bg-[#123524] rounded-lg shadow-lg max-w-4xl">
+        <h2 class="text-2xl font-semibold mb-6 text-[#EFE3C2]">Edit Penduduk</h2>
 
         {{-- Alert Error --}}
         @if ($errors->any())
-            <div class="mb-4 ">
+            <div class="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li class="text-red-600">{{ $error }}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
         @endif
-        <form action="{{ route('admin.daftar-penduduk.edit-penduduk.submit', ['nik' => $citizen->nik]) }}" method="POST">
+        <form action="{{ route('admin.daftar-penduduk.edit-penduduk.submit', $citizen->nik) }}" method="POST">
             @csrf
             @method('PUT')
-
-
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" id="disabled-input" aria-label="disabled input" name="nik" id="nik"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    value="{{ old('nik', $citizen->nik) }}" disabled>
-                <label for="nik"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    NIK</label>
+            <!-- Form fields -->
+            <!-- NIK -->
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">NIK</label>
+                <input type="text" name="nik" id="nik"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="{{ $citizen->nik }}" placeholder="Masukkan NIK" required>
             </div>
+
             <!-- Nama -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Nama</label>
                 <input type="text" name="name" id="name"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder="" value="{{ old('name', $citizen->name) }}">
-                <label for="name"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Nama</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="{{ $citizen->name }}" placeholder="Masukkan Nama" required>
             </div>
+
             <!-- Tempat Lahir -->
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" name="tempat_lahir" id="tempat_lahir" id="disabled-input" aria-label="disabled input"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " value="{{ old('tempat_lahir', $citizen->tempat_lahir) }}" disabled>
-                <label for="tempat_lahir"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Tempat Lahir</label>
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Tempat Lahir</label>
+                <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ $citizen->tempat_lahir }}"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Tempat Lahir" required>
             </div>
 
             <!-- Tanggal Lahir -->
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    value="{{ old('tanggal_lahir', $citizen->tanggal_lahir) }}">
-                <label for="tanggal_lahir"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Tanggal Lahir</label>
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ $citizen->tanggal_lahir }}"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
             </div>
 
             <!-- Jenis Kelamin -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Jenis Kelamin</label>
                 <select name="jenis_kelamin" id="jenis_kelamin"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                    <option value="Laki-laki"
-                        {{ old('jenis_kelamin', $citizen->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="" {{ empty($citizen->jenis_kelamin) ? 'selected' : '' }}>-- Pilih Jenis Kelamin --
                     </option>
-                    <option value="Perempuan"
-                        {{ old('jenis_kelamin', $citizen->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan
+                    <option value="Laki-laki" {{ $citizen->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki
+                    </option>
+                    <option value="Perempuan" {{ $citizen->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan
                     </option>
                 </select>
-                <label for="jenis_kelamin"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Jenis Kelamin</label>
+
             </div>
 
             <!-- Alamat -->
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" name="alamat" id="alamat"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " value="{{ old('alamat', $citizen->alamat) }}">
-                <label for="alamat"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Alamat</label>
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Alamat</label>
+                <input type="text" name="alamat" id="alamat" value="{{ $citizen->alamat }}"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Alamat" required>
             </div>
 
             <!-- Agama -->
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" name="agama" id="agama"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " value="{{ old('agama', $citizen->agama) }}">
-                <label for="agama"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Agama</label>
-                @error('agama')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Agama</label>
+                <select name="agama" id="agama"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="Islam" {{ $citizen->agama == 'Islam' ? 'selected' : '' }}>Islam</option>
+                    <option value="Kristen" {{ $citizen->agama == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                    <option value="Katolik" {{ $citizen->agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                    <option value="Hindu" {{ $citizen->agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                    <option value="Buddha" {{ $citizen->agama == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+
+                </select>
+
             </div>
 
             <!-- Status Perkawinan -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Status Perkawinan</label>
                 <select name="status_perkawinan" id="status_perkawinan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                    <option value="Belum Kawin"
-                        {{ old('status_perkawinan', $citizen->status_perkawinan) == 'Belum Kawin' ? 'selected' : '' }}>
-                        Belum Kawin</option>
-                    <option value="Kawin"
-                        {{ old('status_perkawinan', $citizen->status_perkawinan) == 'Kawin' ? 'selected' : '' }}>Kawin
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="" {{ empty($citizen->status_perkawinan) ? 'selected' : '' }}>-- Pilih Status --
                     </option>
-                    <option value="Cerai Hidup"
-                        {{ old('status_perkawinan', $citizen->status_perkawinan) == 'Cerai Hidup' ? 'selected' : '' }}>
-                        Cerai Hidup</option>
-                    <option value="Cerai Mati"
-                        {{ old('status_perkawinan', $citizen->status_perkawinan) == 'Cerai Mati' ? 'selected' : '' }}>Cerai
+                    <option value="Belum Kawin" {{ $citizen->status_perkawinan == 'Belum Kawin' ? 'selected' : '' }}>Belum
+                        Kawin</option>
+                    <option value="Kawin" {{ $citizen->status_perkawinan == 'Kawin' ? 'selected' : '' }}>Kawin</option>
+                    <option value="Cerai Hidup" {{ $citizen->status_perkawinan == 'Cerai Hidup' ? 'selected' : '' }}>Cerai
+                        Hidup</option>
+                    <option value="Cerai Mati" {{ $citizen->status_perkawinan == 'Cerai Mati' ? 'selected' : '' }}>Cerai
                         Mati</option>
                 </select>
-                <label for="status_perkawinan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Status Perkawinan</label>
-                @error('status_perkawinan')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+
             </div>
 
             <!-- Pekerjaan -->
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" name="pekerjaan" id="pekerjaan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " value="{{ old('pekerjaan', $citizen->pekerjaan) }}">
-                <label for="pekerjaan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Pekerjaan</label>
-                @error('pekerjaan')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Pekerjaan</label>
+                <input type="text" name="pekerjaan" id="pekerjaan" value="{{ $citizen->pekerjaan }}"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Pekerjaan" required>
             </div>
 
             <!-- Kewarganegaraan -->
-            <div class="relative z-0 w-full mb-5 group">
-                <select name="kewarganegaraan" id="kewarganegaraan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                    <option value="WNI"
-                        {{ old('kewarganegaraan', $citizen->kewarganegaraan) == 'WNI' ? 'selected' : '' }}>WNI</option>
-                    <option value="WNA"
-                        {{ old('kewarganegaraan', $citizen->kewarganegaraan) == 'WNA' ? 'selected' : '' }}>WNA</option>
-                </select>
-                <label for="kewarganegaraan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Kewarganegaraan</label>
-                @error('kewarganegaraan')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Kewarganegaraan</label>
+                <input type="text" name="kewarganegaraan" id="kewarganegaraan" value="{{ $citizen->kewarganegaraan }}"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Kewarganegaraan" required>
             </div>
 
-            <button type="submit"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update</button>
-        </form>
+            <!-- Golongan Darah -->
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Golongan Darah</label>
+                <select name="golongan_darah" id="golongan_darah"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="" {{ empty($citizen->golongan_darah) ? 'selected' : '' }}>-- Pilih Golongan Darah
+                        --</option>
+                    <option value="A" {{ $citizen->golongan_darah == 'A' ? 'selected' : '' }}>A</option>
+                    <option value="B" {{ $citizen->golongan_darah == 'B' ? 'selected' : '' }}>B</option>
+                    <option value="AB" {{ $citizen->golongan_darah == 'AB' ? 'selected' : '' }}>AB</option>
+                    <option value="O" {{ $citizen->golongan_darah == 'O' ? 'selected' : '' }}>O</option>
+                </select>
 
+            </div>
+            <!-- Tombol Simpan -->
+            <button type="submit"
+                class="w-full py-2 px-4 bg-[#3E7B27] text-white font-semibold rounded-lg focus:outline-none focus:ring-2  hover:bg-gray-700 mt-4">
+                Simpan
+            </button>
+        </form>
     </div>
 @endsection

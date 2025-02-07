@@ -3,12 +3,12 @@
 @section('title', 'Tambah Penduduk')
 
 @section('content')
-    <div class="container mt-5">
-        <h2 class="mb-4">Tambah Penduduk</h2>
+    <div class="container mx-auto mt-4 p-6 bg-[#123524] rounded-lg shadow-lg max-w-4xl">
+        <h2 class="text-2xl font-semibold mb-6 text-[#EFE3C2]">Tambah Penduduk</h2>
 
         {{-- Alert Error --}}
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -17,79 +17,66 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.daftar-penduduk.tambah.submit') }}" method="POST" class="max-w-md mx-auto">
+        <form action="{{ route('admin.daftar-penduduk.tambah.submit') }}" method="POST" class="space-y-4">
             @csrf
 
             <!-- NIK -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">NIK</label>
                 <input type="text" name="nik" id="nik"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="nik"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    NIK</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan NIK" required>
             </div>
 
             <!-- Nama -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Nama</label>
                 <input type="text" name="name" id="name"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="name"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Nama</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Nama" required>
             </div>
 
-
-
             <!-- Tempat Lahir -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Tempat Lahir</label>
                 <input type="text" name="tempat_lahir" id="tempat_lahir"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="tempat_lahir"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Tempat Lahir</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Tempat Lahir" required>
             </div>
 
             <!-- Tanggal Lahir -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Tanggal Lahir</label>
                 <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="tanggal_lahir"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Tanggal Lahir</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
             </div>
 
             <!-- Jenis Kelamin -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Jenis Kelamin</label>
                 <select name="jenis_kelamin" id="jenis_kelamin"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                     <option value="" selected>-- Pilih Jenis Kelamin --</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                 </select>
-                <label for="jenis_kelamin"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Jenis Kelamin</label>
             </div>
 
             <!-- Alamat -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Alamat</label>
                 <input type="text" name="alamat" id="alamat"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="alamat"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Alamat</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Alamat" required>
             </div>
 
             <!-- Agama -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Agama</label>
                 <select name="agama" id="agama"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                     <option value="" selected>-- Pilih Agama --</option>
                     <option value="Islam">Islam</option>
@@ -99,15 +86,13 @@
                     <option value="Buddha">Buddha</option>
                     <option value="Konghucu">Konghucu</option>
                 </select>
-                <label for="agama"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Agama</label>
             </div>
 
             <!-- Status Perkawinan -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Status Perkawinan</label>
                 <select name="status_perkawinan" id="status_perkawinan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                     <option value="" selected>-- Pilih Status --</option>
                     <option value="Belum Kawin">Belum Kawin</option>
@@ -115,35 +100,29 @@
                     <option value="Cerai Hidup">Cerai Hidup</option>
                     <option value="Cerai Mati">Cerai Mati</option>
                 </select>
-                <label for="status_perkawinan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Status Perkawinan</label>
             </div>
 
             <!-- Pekerjaan -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Pekerjaan</label>
                 <input type="text" name="pekerjaan" id="pekerjaan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="pekerjaan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Pekerjaan</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Pekerjaan" required>
             </div>
 
             <!-- Kewarganegaraan -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Kewarganegaraan</label>
                 <input type="text" name="kewarganegaraan" id="kewarganegaraan"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="kewarganegaraan"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Kewarganegaraan</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Kewarganegaraan" required>
             </div>
 
             <!-- Golongan Darah -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Golongan Darah</label>
                 <select name="golongan_darah" id="golongan_darah"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                     <option value="" selected>-- Pilih Golongan Darah --</option>
                     <option value="A">A</option>
@@ -151,40 +130,29 @@
                     <option value="AB">AB</option>
                     <option value="O">O</option>
                 </select>
-                <label for="golongan_darah"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Golongan Darah</label>
             </div>
 
             <!-- Password -->
-            <!-- Password -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Password</label>
                 <input type="password" name="password" id="password"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="password"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Password</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Masukkan Password" required>
             </div>
 
             <!-- Konfirmasi Password -->
-            <div class="relative z-0 w-full mb-5 group">
+            <div>
+                <label class="block text-sm text-[#EFE3C2]">Konfirmasi Password</label>
                 <input type="password" name="password_confirmation" id="password_confirmation"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required>
-                <label for="password_confirmation"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Konfirmasi Password</label>
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Konfirmasi Password" required>
             </div>
-
 
             <!-- Tombol Simpan -->
             <button type="submit"
-                class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                class="w-full py-2 px-4 bg-[#3E7B27] text-white font-semibold rounded-lg focus:outline-none focus:ring-2  hover:bg-gray-700 mt-4">
                 Simpan
             </button>
         </form>
-
-
     </div>
 @endsection

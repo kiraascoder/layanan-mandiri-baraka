@@ -9,7 +9,7 @@
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-[#123524] dark:bg-[#123524] dark:text-gray-400 border-b">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             NIK
@@ -31,7 +31,7 @@
                 <tbody>
                     @foreach ($surats as $surat)
                         <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            class="bg-white border-b dark:bg-[#123524] dark:border-[#EFE3C2] hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4">{{ $surat->citizen->nik }}</td>
                             <td class="px-6 py-4">{{ $surat->citizen->name }} </td>
                             <td class="px-6 py-4 capitalize">{{ str_replace('_', ' ', $surat->jenis_surat) }}</td>

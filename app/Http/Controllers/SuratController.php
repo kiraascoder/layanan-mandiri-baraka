@@ -53,6 +53,15 @@ class SuratController extends Controller
         return view('admin.management-surat', compact('surats'));
     }
 
+    public function detailCitizenSurat($id)
+    {
+        $surat = Surat::with('citizen')
+            ->where('citizen_id', auth()->user()->id)
+            ->where('id', $id)
+            ->firstOrFail();
+        return view('citizens.detail-surat', compact('surat'));
+    }
+
     public function approve($id)
     {
         $surat = Surat::findOrFail($id);
@@ -77,54 +86,56 @@ class SuratController extends Controller
 
             'jenis_surat' => 'required|in:izin_usaha,kelahiran,kematian,pindah_domisili,jaminan_kesehatan',
             'no_hp' => 'required|digits:12',
+            'data_surat' => 'required|array',
+            'file_persyaratan' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
         $user = auth()->user();
 
         if (!$user) {
             return response()->json(['message' => 'Pengguna belum login'], 401);
         }
-
         $citizen = Citizen::where('nik', $user->nik)->first();
-        switch ($request->jenis_surat) {
+
+        switch ($request->surat_type) {
             case 'pindah_domisili':
                 $request->validate([
-                    'ktp_pemohon' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'fotokopi_kk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pengantar_rt_rw' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'data_surat.alamat_asal' => 'required|string',
+                    'data_surat.alamat_tujuan' => 'required|string',
+                    'data_surat.alasan_pindah' => 'required|string',
+                    'data_surat.jumlah_anggota' => 'required|integer|min:1',
                 ]);
                 break;
             case 'izin_usaha':
                 $request->validate([
-                    'ktp_pemohon' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'fotokopi_kk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pengantar_rt_rw' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pernyataan_usaha' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'foto_lokasi_usaha' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'data_surat.nama_usaha' => 'required|string',
+                    'data_surat.alamat_usaha' => 'required|string',
+                    'data_surat.jenis_usaha' => 'required|string',
+                    'data_surat.modal' => 'required|integer|min:0',
                 ]);
                 break;
             case 'kelahiran':
                 $request->validate([
-                    'ktp_orang_tua' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'kk_orang_tua' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_keterangan_kelahiran' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pengantar_rt_rw' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'buku_nikah_orang_tua' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'data_surat.nama_bayi' => 'required|string',
+                    'data_surat.tanggal_lahir' => 'required|date',
+                    'data_surat.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'data_surat.nama_ayah' => 'required|string',
+                    'data_surat.nama_ibu' => 'required|string',
                 ]);
                 break;
             case 'kematian':
                 $request->validate([
-                    'ktp_almarhum' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'fotokopi_kk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_keterangan_kematian' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pengantar_rt_rw' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'ktp_ahli_waris' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'data_surat.nama_almarhum' => 'required|string',
+                    'data_surat.tanggal_meninggal' => 'required|date',
+                    'data_surat.sebab_meninggal' => 'required|string',
+                    'data_surat.tempat_meninggal' => 'required|string',
                 ]);
                 break;
             case 'jaminan_kesehatan':
                 $request->validate([
-                    'ktp_pemohon' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'dokumen_pendukung' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-                    'surat_pengantar_rt_rw' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'data_surat.nama_pemohon' => 'required|string',
+                    'data_surat.nik' => 'required|digits:16',
+                    'data_surat.alamat' => 'required|string',
+                    'data_surat.keterangan_kesehatan' => 'required|string',
                 ]);
                 break;
         }
@@ -140,21 +151,20 @@ class SuratController extends Controller
             'jenis_surat' => $request->jenis_surat,
             'no_hp' => $request->no_hp,
             'file_persyaratan' => json_encode($files),
+            'data_surat' => json_encode($request->data_surat),
             'status' => 'pending',
         ]);
 
         return redirect('/layanan-surat')->with('success', 'Permohonan berhasil diajukan.');
     }
-
     public function downloadSurat($id)
     {
         $surat = Surat::findOrFail($id);
-
-        if ($surat->file_surat && Storage::exists('public/' . $surat->file_surat)) {
-            return Storage::download('public/' . $surat->file_surat);
+        $filePath = storage_path('app/public/' . $surat->surat_selesai);
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
         }
 
-        return redirect()->back()->with('error', 'File tidak ditemukan');
+        return response()->json(['message' => 'Surat tidak ditemukan'], 404);
     }
-    
 }

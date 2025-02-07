@@ -10,14 +10,13 @@
         </div>
         <div class="mt-4 mb-4">
             <a href="{{ route('admin.daftar-penduduk.tambah-penduduk') }}"
-                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg">
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#3E7B27] hover:bg-gray-600 rounded-lg">
                 Tambah Penduduk
             </a>
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-[#123524] dark:bg-[#123524] dark:text-gray-400 border-b">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             NIK
@@ -42,7 +41,7 @@
                 <tbody>
                     @foreach ($citizens as $citizen)
                         <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            class="bg-white border-b dark:bg-[#123524] dark:border-[#EFE3C2] hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4">
                                 {{ $citizen->nik }}
                             </td>
@@ -62,15 +61,16 @@
                                 {{ $citizen->pekerjaan }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ route('admin.daftar-penduduk.edit-penduduk', $citizen->nik) }}"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                | <form action="{{ route('admin.daftar-penduduk.destroy', $citizen->nik) }}" method="POST"
+                                <form action="{{ route('admin.daftar-penduduk.destroy', $citizen->nik) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Hapus</button>
                                 </form>
+                                |
+                                <a href="{{ route('admin.daftar-penduduk.edit-penduduk', $citizen->nik) }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                             </td>
                         </tr>
                     @endforeach

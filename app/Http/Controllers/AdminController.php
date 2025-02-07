@@ -7,14 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Citizen;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
+use App\Models\Saran;
 
 class AdminController extends Controller
 {
 
     public function index()
     {
+        $totalSuratDiproses = Surat::whereIn('status', ['pending', 'diproses'])->count();
+        $totalSuratSelesai = Surat::where('status', 'selesai')->count();
+        $totalPengguna = Citizen::count();
 
-        return view('admin.dashboard');
+
+        return view('admin.dashboard', compact('totalSuratDiproses', 'totalSuratSelesai', 'totalPengguna'));
     }
 
     public function create()
@@ -36,7 +42,8 @@ class AdminController extends Controller
 
     public function showMasukan()
     {
-        return view('admin.masukan');
+        $sarans = Saran::all();
+        return view('admin.masukan', compact('sarans'));
     }
 
 
@@ -81,34 +88,41 @@ class AdminController extends Controller
 
         return redirect()->route('admin.daftar-penduduk')->with('success', 'Citizen successfully created.');
     }
-    public function update(Request $request, Citizen $citizen)
+    public function update(Request $request, $nik)
     {
-        $request->validate([
+        // Validate the incoming data
+        $validated = $request->validate([
+            'nik' => 'required|numeric|:citizens,nik,' . $nik,  // Ensuring NIK is unique except for the current one
             'name' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
-            'tempat_lahir' => 'string',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'alamat' => 'required|string',
+            'jenis_kelamin' => 'required|string',
+            'alamat' => 'required|string|max:255',
             'agama' => 'required|string',
-            'status_perkawinan' => 'required|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati',
-            'pekerjaan' => 'required|string',
-            'kewarganegaraan' => 'required|in:WNI,WNA',
-            'golongan_darah' => 'nullable|string',
+            'status_perkawinan' => 'required|string',
+            'pekerjaan' => 'required|string|max:255',
+            'kewarganegaraan' => 'required|string|max:255',
+            'golongan_darah' => 'required|string',
         ]);
 
-        $citizen->update($request->only([
-            'name',
-            'tanggal_lahir',
-            'tempat_lahir',
-            'jenis_kelamin',
-            'alamat',
-            'agama',
-            'status_perkawinan',
-            'pekerjaan',
-            'kewarganegaraan',
-            'golongan_darah',
-        ]));
-        return redirect()->route('admin.daftar-penduduk')->with('success', 'Citizen successfully updated.');
+        // Find the citizen by NIK
+        $citizen = Citizen::where('nik', $nik)->firstOrFail();
+
+        // Update the citizen's data
+        $citizen->update([
+            'nik' => $validated['nik'],
+            'name' => $validated['name'],
+            'tempat_lahir' => $validated['tempat_lahir'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+            'jenis_kelamin' => $validated['jenis_kelamin'],
+            'alamat' => $validated['alamat'],
+            'agama' => $validated['agama'],
+            'status_perkawinan' => $validated['status_perkawinan'],
+            'pekerjaan' => $validated['pekerjaan'],
+            'kewarganegaraan' => $validated['kewarganegaraan'],
+            'golongan_darah' => $validated['golongan_darah'],
+        ]);
+        return redirect()->route('admin.daftar-penduduk')->with('success', 'Data penduduk berhasil diperbarui.');
     }
 
 
@@ -131,12 +145,64 @@ class AdminController extends Controller
     public function generateSurat($id)
     {
         $surat = Surat::with('citizen')->findOrFail($id);
+        $template = 'templates.' . $surat->jenis_surat;
 
-        $pdf = Pdf::loadView('template.surat-test', [
+
+        // Dekode data_surat di controller dan kirimkan ke view
+        $data_surat = json_decode($surat->data_surat);
+
+        if (!view()->exists($template)) {
+            return abort(404, 'Template tidak ditemukan: ' . $template);
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView($template, [
             'citizen' => $surat->citizen,
-            'requestModel' => $surat
+            'requestModel' => $surat,
+            'data_surat' => $data_surat // Mengirim data_surat sebagai objek
         ]);
 
-        return $pdf->download('surat_' . $surat->citizen->nik . '.pdf');
+        // Download PDF
+        return $pdf->download('Surat_' . ucfirst(str_replace('_', '', $surat->jenis_surat)) . '.pdf');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $surat = Surat::findOrFail($id);
+
+        // Pastikan status yang dikirim ada dalam ENUM
+        $statusValid = ['pending', 'diproses', 'selesai', 'ditolak'];
+        if (!in_array($request->status, $statusValid)) {
+            return back()->with('error', 'Status tidak valid.');
+        }
+
+        $surat->status = $request->status;
+
+        // Jika status ditolak, simpan alasan penolakan
+        if ($request->status == 'ditolak') {
+            $surat->alasan_reject = $request->alasan_reject ?? 'Tidak ada alasan diberikan';
+        } else {
+            $surat->alasan_reject = null; // Reset alasan jika bukan ditolak
+        }
+
+        $surat->save();
+
+        return redirect()->route('admin.management-surat')->with('success', 'Status surat berhasil diperbarui.');
+    }
+    public function uploadSurat(Request $request, $id)
+    {
+        $request->validate([
+            'surat_selesai' => 'required|mimes:pdf|max:2048',
+        ]);
+        $surat = Surat::findOrFail($id);
+        if ($request->hasFile('surat_selesai')) {
+            $filePath = $request->file('surat_selesai')->store('surat_selesai', 'public');
+
+            // Update database
+            $surat->update([
+                'surat_selesai' => $filePath,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Surat berhasil diupload.');
     }
 }

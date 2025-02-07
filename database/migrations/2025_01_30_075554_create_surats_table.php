@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('citizen_id')->constrained()->onDelete('cascade');
-            $table->enum('surat_type', ['izin_usaha', 'kelahiran', 'kematian', 'pindah_domisili', 'jaminan_kesehatan']);
-            $table->string('no_hp');
-            $table->enum('status', ['pending', 'diproses', 'selesai', 'reject'])->default('pending');
+            $table->enum('jenis_surat', ['izin_usaha', 'kelahiran', 'kematian', 'pindah_domisili', 'jaminan_kesehatan']);
+            $table->string('no_surat')->unique()->nullable();
+            $table->json('data_surat')->nullable();
+            $table->text('no_hp');
+            $table->json('file_persyaratan')->nullable();
+            $table->enum('status', ['pending', 'diproses', 'selesai',])->default('pending');
             $table->text('alasan_reject')->nullable();
-            $table->string('file_surat')->nullable(); // File PDF Surat
             $table->timestamps();
         });
     }
