@@ -19,7 +19,6 @@
 
         <form action="{{ route('admin.daftar-penduduk.tambah.submit') }}" method="POST" class="space-y-4">
             @csrf
-
             <!-- NIK -->
             <div>
                 <label class="block text-sm text-[#EFE3C2]">NIK</label>

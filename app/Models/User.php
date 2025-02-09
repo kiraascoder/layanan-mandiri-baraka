@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        "is_admin",
+        'role',
     ];
 
     /**
@@ -46,5 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean'
         ];
+    }
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class);
     }
 }

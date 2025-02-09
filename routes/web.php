@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\SuratController;
+use App\Http\Controllers\KecamatanController;
 
 // Default Route
 Route::get('/', function () {
@@ -18,10 +19,10 @@ Route::get('/admin/login', [AdminSesiController::class, 'index'])->name('admin.l
 Route::post('/admin/logout', function () {
     Auth::logout();
     return redirect('/admin/login');
-})->name('logout')->middleware('admin');
+})->name('logoutAdmin')->middleware('admin:kelurahan');
 
-
-Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+// Route Admin Kelurahan
+Route::middleware(['admin:kelurahan'])->prefix('kelurahan')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/daftar-penduduk', [AdminController::class, 'showDaftarPenduduk'])->name('daftar-penduduk');
     Route::get('/management-surat', [AdminController::class, 'showSurat'])->name('management-surat');
@@ -44,7 +45,7 @@ Route::controller(CitizenController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'loginCitizen')->name('login.submit');
 });
-Route::middleware(['auth:citizen'])->prefix('/')->name('citizen.')->controller(CitizenController::class)->group(function () {
+Route::middleware(['auth:citizen',])->prefix('/')->name('citizen.')->controller(CitizenController::class)->group(function () {
     Route::get('profil', 'profil')->name('profil');
     Route::get('saran', 'viewSaran')->name('beri-saran');
     Route::get('informasi-tani', 'viewTani')->name('informasi-tani');
@@ -64,3 +65,28 @@ Route::get('/layanan-surat/buat-surat/pindah-dom', [SuratController::class, 'pin
 Route::get('/layanan-surat/buat-surat/jaminan-kesehatan', [SuratController::class, 'jaminanKesehatanView'])->name('citizen.jaminan-kesehatan')->middleware('auth:citizen');
 Route::get('/layanan-surat/buat-surat', [SuratController::class, 'buatSurat'])->name('citizen.buat-surat')->middleware('auth:citizen');
 Route::post('/layanan-surat/buat', [SuratController::class, 'upload'])->name('citizen.buat-surat.submit')->middleware('auth:citizen');
+
+
+// Route Kecamatan
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/kecamatan/dashboard', [KecamatanController::class, 'dashboard'])
+        ->name('admin.kecamatan-dashboard')
+        ->middleware('admin:superadmin');
+    Route::get('/kecamatan/daftar-kelurahan', [KecamatanController::class, 'showKelurahan'])
+        ->name('admin.daftar-kelurahan')
+        ->middleware('admin:superadmin');
+    Route::get('/kecamatan/daftar-surat-keluar', [KecamatanController::class, 'showSuratKeluar'])
+        ->name('admin.daftar-surat-keluar')
+        ->middleware('admin:superadmin');
+    Route::get('/kecamatan/daftar-kelurahan/{id}/detail', [KecamatanController::class, 'showDetailKelurahan'])->name('admin.detail-kelurahan')
+        ->middleware('admin:superadmin');
+    Route::get('/kecamatan/daftar-surat-keluar/{id}/detail', [KecamatanController::class, 'detailSuratKeluar'])->name('admin.detail-surat-keluar')
+        ->middleware('admin:superadmin');
+    Route::get('/daftar-surat-keluar/{id}/download/', [KecamatanController::class, 'downloadSurat'])->name('admin.download.surat')->middleware('admin:superadmin');
+});
+
+Route::post('/admin/kecamatan/logout', function () {
+    Auth::logout();
+    return redirect('/admin/login');
+})->name('logoutSuperAdmin')->middleware('admin:superadmin');

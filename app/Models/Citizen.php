@@ -13,7 +13,6 @@ class Citizen extends Authenticatable
     protected $fillable = [
         'nik',
         'name',
-
         'tanggal_lahir',
         'tempat_lahir',
         'jenis_kelamin',
@@ -24,6 +23,7 @@ class Citizen extends Authenticatable
         'kewarganegaraan',
         'golongan_darah',
         'password',
+        'kelurahan_id',
     ];
 
     protected $hidden = [
@@ -39,5 +39,9 @@ class Citizen extends Authenticatable
     public function surats()
     {
         return $this->hasMany(Surat::class);
+    }
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class);
     }
 }

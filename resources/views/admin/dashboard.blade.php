@@ -4,8 +4,9 @@
 
 @section('content')
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-semibold mb-4">Admin Dashboard</h1>
 
+        <h1 class="text-2xl font-semibold mb-4">Admin Dashboard</h1>
+        <h1 class="mb-2">Selamat Datang, {{ Auth::user()->name }} </h1>
         <!-- Statistik -->
         <div class="grid grid-cols-3 gap-4 mb-6">
             <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">

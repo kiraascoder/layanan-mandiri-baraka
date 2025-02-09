@@ -14,11 +14,31 @@ class AdminSedeer extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password123'),
-            'is_admin' => true,
-        ]);
+
+        $adminData =
+            [
+                [
+                    'name' => 'Admin Kecamatan',
+                    'email' => 'kecamatanbaraka@gmail.com',
+                    'password' => bcrypt('password123'),
+                    'role' => 'superadmin',
+                ],
+                [
+                    'name' => 'Admin Kelurahan Tomenawa',
+                    'email' => 'kelurahantomenawa@gmail.com',
+                    'password' => bcrypt('password123'),
+                    'role' => 'kelurahan',
+                ],
+                [
+                    'name' => 'Admin Kelurahan Baraka',
+                    'email' => 'kelurahanbaraka@gmail.com',
+                    'password' => bcrypt('password123'),
+                    'role' => 'kelurahan',
+                ]
+            ];
+
+        foreach ($adminData as $val) {
+            \App\Models\User::create($val);
+        }
     }
 }

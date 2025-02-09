@@ -37,8 +37,10 @@ class AdminSesiController extends Controller
 
 
         if (Auth::attempt($infologin, $request->has('remember'))) {
-            if (Auth::user()->is_admin == 1) {
-                return redirect('/admin/dashboard');
+            if (Auth::user()->role == "superadmin") {
+                return redirect('/kecamatan/dashboard');
+            } elseif (Auth::user()->role == "kelurahan") {
+                return redirect('/kelurahan/dashboard');
             }
         } else {
             return redirect('/admin/login')->withErrors(['login' => 'Login Gagal, Email atau Password tidak sesuai!'])->withInput();

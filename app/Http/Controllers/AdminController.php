@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use App\Models\Saran;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
 
     public function index()
     {
-        $totalSuratDiproses = Surat::whereIn('status', ['pending', 'diproses'])->count();
-        $totalSuratSelesai = Surat::where('status', 'selesai')->count();
-        $totalPengguna = Citizen::count();
+        $kelurahanId = Auth::user()->kelurahan_id;
+        $totalSuratDiproses = Surat::where('kelurahan_id', $kelurahanId)
+            ->whereIn('status', ['pending', 'diproses'])
+            ->count();
 
+        $totalSuratSelesai = Surat::where('kelurahan_id', $kelurahanId)
+            ->where('status', 'selesai')
+            ->count();
+        $totalPengguna = Citizen::where('kelurahan_id', $kelurahanId)->count();
 
         return view('admin.dashboard', compact('totalSuratDiproses', 'totalSuratSelesai', 'totalPengguna'));
     }
+
 
     public function create()
     {
@@ -30,21 +37,33 @@ class AdminController extends Controller
 
     public function showDaftarPenduduk()
     {
-        $citizens = Citizen::all();
+        $kelurahanId = Auth::user()->kelurahan_id;
+        if (!$kelurahanId) {
+            return back()->withErrors(['error' => 'Admin tidak memiliki kelurahan yang valid!']);
+        }
+        $citizens = Citizen::where('kelurahan_id', $kelurahanId)->get();
+
         return view('admin.daftar-penduduk', compact('citizens'));
     }
 
+
     public function showSurat()
     {
-        $surats = Surat::all();
+        $kelurahanId = Auth::user()->kelurahan_id;
+        $surats = Surat::where('kelurahan_id', $kelurahanId)->get();
         return view('admin.management-surat', compact('surats'));
     }
 
     public function showMasukan()
     {
-        $sarans = Saran::all();
+        $kelurahanId = Auth::user()->kelurahan_id; // Dapatkan ID kelurahan dari admin yang login
+        $sarans = Saran::whereHas('citizen', function ($query) use ($kelurahanId) {
+            $query->where('kelurahan_id', $kelurahanId);
+        })->get();
+
         return view('admin.masukan', compact('sarans'));
     }
+
 
 
     public function edit($nik)
@@ -68,9 +87,9 @@ class AdminController extends Controller
             'kewarganegaraan' => 'required|in:WNI,WNA',
             'golongan_darah' => 'nullable|string',
             'password' => 'required|string|min:8|confirmed',
+
         ]);
-
-
+        $kelurahanId = Auth::user()->kelurahan_id;
         Citizen::create([
             'nik' => $request->nik,
             'name' => $request->name,
@@ -84,9 +103,10 @@ class AdminController extends Controller
             'kewarganegaraan' => $request->kewarganegaraan,
             'golongan_darah' => $request->golongan_darah,
             'password' => Hash::make($request->password),
+            'kelurahan_id' => $kelurahanId,
         ]);
 
-        return redirect()->route('admin.daftar-penduduk')->with('success', 'Citizen successfully created.');
+        return redirect()->route('admin.daftar-penduduk')->with('success', 'Warga berhasil ditambahkan!');
     }
     public function update(Request $request, $nik)
     {
@@ -104,11 +124,8 @@ class AdminController extends Controller
             'kewarganegaraan' => 'required|string|max:255',
             'golongan_darah' => 'required|string',
         ]);
-
-        // Find the citizen by NIK
+        $kelurahanId = Auth::user()->kelurahan_id;
         $citizen = Citizen::where('nik', $nik)->firstOrFail();
-
-        // Update the citizen's data
         $citizen->update([
             'nik' => $validated['nik'],
             'name' => $validated['name'],
@@ -121,6 +138,7 @@ class AdminController extends Controller
             'pekerjaan' => $validated['pekerjaan'],
             'kewarganegaraan' => $validated['kewarganegaraan'],
             'golongan_darah' => $validated['golongan_darah'],
+            'kelurahan_id' => $kelurahanId,
         ]);
         return redirect()->route('admin.daftar-penduduk')->with('success', 'Data penduduk berhasil diperbarui.');
     }

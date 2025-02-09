@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('citizen_id')->constrained()->onDelete('cascade');
+            $table->foreignId('kelurahan_id')->constrained()->onDelete('cascade'); // Relasi ke kelurahan
+            $table->foreignId('citizen_id')->constrained()->onDelete('cascade'); // Relasi ke citizen
             $table->enum('jenis_surat', ['izin_usaha', 'kelahiran', 'kematian', 'pindah_domisili', 'jaminan_kesehatan']);
             $table->string('no_surat')->unique()->nullable();
             $table->json('data_surat')->nullable();
-            $table->text('no_hp');
+            $table->string('no_hp'); // Gunakan string untuk nomor HP
             $table->json('file_persyaratan')->nullable();
-            $table->enum('status', ['pending', 'diproses', 'selesai',])->default('pending');
+            $table->enum('status', ['pending', 'diproses', 'selesai'])->default('pending');
+            $table->string('surat_selesai')->nullable(); // Menghapus ->after()
             $table->text('alasan_reject')->nullable();
             $table->timestamps();
         });

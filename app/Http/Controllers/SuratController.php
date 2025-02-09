@@ -6,6 +6,7 @@ use App\Models\Surat;
 use App\Models\Citizen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class SuratController extends Controller
 {
@@ -140,12 +141,12 @@ class SuratController extends Controller
                 break;
         }
 
+        $kelurahanId = Auth::user()->kelurahan_id;
         $files = [];
         foreach ($request->allFiles() as $key => $file) {
             $path = $file->store("persyaratan/{$request->jenis_surat}", 'public');
             $files[$key] = asset("storage/$path");
         }
-
         $permohonan = Surat::create([
             'citizen_id' => $citizen->id,
             'jenis_surat' => $request->jenis_surat,
@@ -153,6 +154,7 @@ class SuratController extends Controller
             'file_persyaratan' => json_encode($files),
             'data_surat' => json_encode($request->data_surat),
             'status' => 'pending',
+            'kelurahan_id' => $kelurahanId,
         ]);
 
         return redirect('/layanan-surat')->with('success', 'Permohonan berhasil diajukan.');
@@ -164,7 +166,6 @@ class SuratController extends Controller
         if (file_exists($filePath)) {
             return response()->download($filePath);
         }
-
         return response()->json(['message' => 'Surat tidak ditemukan'], 404);
     }
 }
