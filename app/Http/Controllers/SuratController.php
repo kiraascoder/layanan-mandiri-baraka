@@ -23,29 +23,29 @@ class SuratController extends Controller
         return view('surat.buat-surat');
     }
 
-    public function izinUsahaView()
+    public function ketDomisiliView()
     {
-        return view('surat.izin-usaha');
+        return view('surat.ket_domisili');
     }
 
-    public function kelahiranView()
+    public function ketTidakMampuView()
     {
-        return view('surat.kelahiran');
+        return view('surat.ket_tidak_mampu');
     }
 
-    public function kematianView()
+    public function ketUsahaView()
     {
-        return view('surat.kematian');
+        return view('surat.ket_usaha');
     }
 
-    public function pindahDomisiliView()
+    public function penghasilanOrtuView()
     {
-        return view('surat.pindah-domisili');
+        return view('surat.penghasilan_ortu');
     }
 
-    public function jaminanKesehatanView()
+    public function pernahMenikahView()
     {
-        return view('surat.jaminan-kesehatan');
+        return view('surat.pernah_menikah');
     }
 
     public function index()
@@ -84,8 +84,7 @@ class SuratController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-
-            'jenis_surat' => 'required|in:izin_usaha,kelahiran,kematian,pindah_domisili,jaminan_kesehatan',
+            'jenis_surat' => 'required|in:ket_domisili,ket_tidak_mampu,ket_usaha,penghasilan_ortu,pernah_menikah',
             'no_hp' => 'required|digits:12',
             'data_surat' => 'required|array',
             'file_persyaratan' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
@@ -98,45 +97,70 @@ class SuratController extends Controller
         $citizen = Citizen::where('nik', $user->nik)->first();
 
         switch ($request->surat_type) {
-            case 'pindah_domisili':
+            case 'penghasilan_ortu':
                 $request->validate([
-                    'data_surat.alamat_asal' => 'required|string',
-                    'data_surat.alamat_tujuan' => 'required|string',
-                    'data_surat.alasan_pindah' => 'required|string',
-                    'data_surat.jumlah_anggota' => 'required|integer|min:1',
-                ]);
-                break;
-            case 'izin_usaha':
-                $request->validate([
-                    'data_surat.nama_usaha' => 'required|string',
-                    'data_surat.alamat_usaha' => 'required|string',
-                    'data_surat.jenis_usaha' => 'required|string',
-                    'data_surat.modal' => 'required|integer|min:0',
-                ]);
-                break;
-            case 'kelahiran':
-                $request->validate([
-                    'data_surat.nama_bayi' => 'required|string',
+                    'data_surat.nama_anak' => 'required|string',
+                    'data_surat.tempat_lahir' => 'required|string',
                     'data_surat.tanggal_lahir' => 'required|date',
+                    'data_surat.nik' => 'required|string',
                     'data_surat.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                    'data_surat.nama_ayah' => 'required|string',
-                    'data_surat.nama_ibu' => 'required|string',
-                ]);
-                break;
-            case 'kematian':
-                $request->validate([
-                    'data_surat.nama_almarhum' => 'required|string',
-                    'data_surat.tanggal_meninggal' => 'required|date',
-                    'data_surat.sebab_meninggal' => 'required|string',
-                    'data_surat.tempat_meninggal' => 'required|string',
-                ]);
-                break;
-            case 'jaminan_kesehatan':
-                $request->validate([
-                    'data_surat.nama_pemohon' => 'required|string',
-                    'data_surat.nik' => 'required|digits:16',
+                    'data_surat.pekerjaan' => 'required|string',
                     'data_surat.alamat' => 'required|string',
-                    'data_surat.keterangan_kesehatan' => 'required|string',
+                    'data_surat.nama_ayah' => 'required|string',
+                    'data_surat.umur' => 'required|integer|min:0',
+                    'data_surat.pekerjaan_ortu' => 'required|string',
+                    'data_surat.alamat_ortu' => 'required|string',
+                    'data_surat.penghasilan_ortu' => 'required|integer|min:0',
+                ]);
+                break;
+            case 'pernah_menikah':
+                $request->validate([
+                    'data_surat.nama_suami' => 'required|string',
+                    'data_surat.tanggal_lahir_suami' => 'required|date',
+                    'data_surat.tempat_lahir_suami' => 'required|string',
+                    'data_surat.nama_istri' => 'required|string',
+                    'data_surat.tanggal_lahir_istri' => 'required|date',
+                    'data_surat.tempat_lahir_istri' => 'required|string',
+                    'data_surat.alamat' => 'required|string',
+                    'data_surat.no_kk' => 'required|string',
+                ]);
+                break;
+            case 'ket_usaha':
+                $request->validate([
+                    'data_surat.nama' => 'required|string',
+                    'data_surat.tempat_lahir' => 'required|string',
+                    'data_surat.tanggal_lahir' => 'required|date',
+                    'data_surat.nik' => 'required|string',
+                    'data_surat.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'data_surat.pekerjaan' => 'required|string',
+                    'data_surat.alamat' => 'required|string',
+                    'data_surat.nama_usaha' => 'required|string',
+                ]);
+                break;
+            case 'ket_domisili':
+                $request->validate([
+                    'data_surat.nama' => 'required|string',
+                    'data_surat.tempat_lahir' => 'required|string',
+                    'data_surat.tanggal_lahir' => 'required|date',
+                    'data_surat.nik' => 'required|string',
+                    'data_surat.pekerjaan' => 'required|string',
+                    'data_surat.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'data_surat.alamat' => 'required|string',
+                ]);
+                break;
+            case 'ket_tidak_mampu':
+                $request->validate([
+                    'data_surat.nama_anak' => 'required|string',
+                    'data_surat.tempat_lahir' => 'required|string',
+                    'data_surat.tanggal_lahir' => 'required|date',
+                    'data_surat.nik' => 'required|digits:16',
+                    'data_surat.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'data_surat.pekerjaan' => 'required|string',
+                    'data_surat.alamat' => 'required|string',
+                    'data_surat.nama_ayah' => 'required|string',
+                    'data_surat.umur' => 'required|integer|min:0',
+                    'data_surat.pekerjaan_ortu' => 'required|string',
+                    'data_surat.alamat_ortu' => 'required|string',
                 ]);
                 break;
         }

@@ -26,11 +26,11 @@
                     class="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-[#EFE3C2] dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     required>
                     <option value="" selected>-- Jenis Surat --</option>
-                    <option value="izin_usaha" class="text-black">Surat Keterangan Izin Usaha</option>
-                    <option value="kelahiran" class="text-black">Surat Keterangan Kelahiran</option>
-                    <option value="kematian" class="text-black">Surat Keterangan Kematian</option>
-                    <option value="pindah_domisili" class="text-black">Surat Keterangan Pindah Domisili</option>
-                    <option value="jaminan_kesehatan" class="text-black">Surat Pengantar Jaminan Kesehatan</option>
+                    <option value="pernah_menikah" class="text-black">Surat Keterangan Pernah Menikah</option>
+                    <option value="penghasilan_ortu" class="text-black">Surat Keterangan Penghasilan Orang Tua</option>
+                    <option value="ket_domisili" class="text-black">Surat Keterangan Domisili</option>
+                    <option value="ket_tidak_mampu" class="text-black">Surat Keterangan Tidak Mampu</option>
+                    <option value="ket_usaha" class="text-black">Surat Keterangan Usaha</option>
                 </select>
                 <label for="surat_type"
                     class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 left-4 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -55,11 +55,11 @@
 
             // Definisikan route untuk setiap jenis surat
             var routes = {
-                'izin_usaha': "{{ route('citizen.izin-usaha') }}",
-                'kelahiran': "{{ route('citizen.kelahiran') }}",
-                'kematian': "{{ route('citizen.kematian') }}",
-                'pindah_domisili': "{{ route('citizen.pindah-dom') }}",
-                'jaminan_kesehatan': "{{ route('citizen.jaminan-kesehatan') }}"
+                'pernah_menikah': "{{ route('citizen.pernah-menikah') }}",
+                'ket_domisili': "{{ route('citizen.ket-domisili') }}",
+                'ket_tidak_mampu': "{{ route('citizen.ket-tidak-mampu') }}",
+                'penghasilan_ortu': "{{ route('citizen.penghasilan-ortu') }}",
+                'ket_usaha': "{{ route('citizen.ket-usaha') }}"
             };
 
             // Redirect ke route yang sesuai

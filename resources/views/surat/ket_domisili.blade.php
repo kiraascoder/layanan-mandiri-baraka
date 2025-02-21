@@ -1,10 +1,10 @@
 @extends('components.layout')
 
-@section('title', 'Surat Jaminan Kesehatan')
+@section('title', 'Surat Ket Domisili')
 
 @section('content')
     <div class="container mx-auto mt-4 p-6 bg-[#123524] rounded-lg shadow-lg max-w-4xl">
-        <h2 class="text-2xl font-semibold mb-6 text-[#EFE3C2]">Surat Jaminan Kesehatan</h2>
+        <h2 class="text-2xl font-semibold mb-6 text-[#EFE3C2]">Surat Keterangan Domisili</h2>
 
         {{-- Alert Error --}}
         @if ($errors->any())
@@ -19,15 +19,17 @@
 
         <form action="{{ route('citizen.buat-surat.submit') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="jenis_surat" value="jaminan_kesehatan">
+            <input type="hidden" name="jenis_surat" value="ket_domisili">
 
-            <div id="form_jaminan_kematian">
-                <h3 class="text-lg font-semibold text-[#EFE3C2] mb-4">Syarat Surat Keterangan Jaminan Kesehatan</h3>
+            <div id="form_pindah_domisili">
+                <h3 class="text-lg font-semibold text-[#EFE3C2] mb-4">Syarat Surat Keterangan Domisili</h3>
 
                 <div class="space-y-4">
                     <!-- Dokumen Pendukung -->
                     <div>
                         <label class="block text-sm text-[#EFE3C2]">Dokumen Pendukung</label>
+                        <p class="block text-sm text-[#EFE3C2]">- KTP</p>
+                        <p class="block text-sm text-[#EFE3C2]">- Kartu Keluarga</p>
                         <input type="file" name="file_persyaratan" id="file_persyaratan"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>
@@ -41,15 +43,34 @@
                     </div>
 
 
-                    <!-- Nama Pemohon -->
                     <div>
-                        <label class="block text-sm text-[#EFE3C2]">Nama Pemohon</label>
-                        <input type="text" name="data_surat[nama_pemohon]" id="nama_pemohon"
+                        <label class="block text-sm text-[#EFE3C2]">Nama</label>
+                        <input type="text" name="data_surat[nama]" id="nama"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan Nama Pemohon" required>
+                            placeholder="Masukkan Nama" required>
                     </div>
 
-                    <!-- NIK -->
+                    <div>
+                        <label class="block text-sm text-[#EFE3C2]">Tempat Lahir</label>
+                        <input type="text" name="data_surat[tempat_lahir]" id="tempat_lahir"
+                            class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Masukkan Tempat Lahir" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-[#EFE3C2]">Tanggal Lahir</label>
+                        <input type="date" name="data_surat[tanggal_lahir]" id="tanggal_lahir"
+                            class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Masukkan Tanggal Lahir" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-[#EFE3C2]">Pekerjaan</label>
+                        <input type="text" name="data_surat[pekerjaan]" id="pekerjaan"
+                            class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Masukkan Pekerjaan" required>
+                    </div>
+
                     <div>
                         <label class="block text-sm text-[#EFE3C2]">NIK</label>
                         <input type="text" name="data_surat[nik]" id="nik"
@@ -57,24 +78,23 @@
                             placeholder="Masukkan NIK" required>
                     </div>
 
-                    <!-- Alamat -->
                     <div>
-                        <label class="block text-sm text-[#EFE3C2]">Alamat</label>
+                        <label class="block text-sm text-[#EFE3C2]">Jenis Kelamin</label>
+                        <input type="text" name="data_surat[jenis_kelamin]" id="jenis_kelamin"
+                            class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Masukkan Jenis Kelamin" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-[#EFE3C2]">Lingkungan Anda Berada</label>
                         <input type="text" name="data_surat[alamat]" id="alamat"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan Alamat" required>
+                            placeholder="Masukkan Lingkugan Asal" required>
                     </div>
 
-                    <!-- Keterangan Kesehatan -->
-                    <div>
-                        <label class="block text-sm text-[#EFE3C2]">Keterangan Kesehatan</label>
-                        <input type="text" name="data_surat[keterangan_kesehatan]" id="keterangan_kesehatan"
-                            class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan Keterangan Kesehatan" required>
-                    </div>
+
                 </div>
             </div>
-
             <!-- Submit Button -->
             <button type="submit"
                 class="w-full py-2 px-4 bg-[#3E7B27] text-white font-semibold rounded-lg focus:outline-none focus:ring-2  hover:bg-gray-700 mt-4">

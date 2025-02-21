@@ -4,6 +4,27 @@
 
 @section('content')
     <div class="mt-4">
+        @if (session('success'))
+            <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                <ul class="list-disc ml-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="caption mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Detail Surat</h1>
             <p class="text-lg text-gray-500">Informasi lengkap mengenai surat permohonan</p>
@@ -67,11 +88,31 @@
                 </form>
             </div>
 
+            <!-- Form Query Nomor Surat -->
+            <div class="mt-6">
+                <form action="{{ route('admin.surat.updateNomor', $surat->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <label for="nomor_surat" class="block text-sm font-medium text-gray-700">Nomor Surat:</label>
+                    <input type="text" name="no_surat" id="no_surat"
+                        value="{{ old('nomor_surat', $surat->nomor_surat) }}"
+                        class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                        placeholder="Masukkan nomor surat">
+
+                    <button type="submit"
+                        class="mt-4 inline-block px-4 py-2 bg-[#3E7B27] text-white rounded-md hover:bg-gray-600">
+                        Simpan Nomor Surat
+                    </button>
+                </form>
+            </div>
+
             <!-- Upload Surat -->
             <div id="uploadSuratDiv" class="mt-4" style="display: block;">
                 <form action="{{ route('admin.surat.upload', $surat->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <label for="file_surat" class="block text-sm font-medium text-gray-700">Upload Surat:</label>
+                    <label for="file_surat" class="block text-sm font-medium text-gray-700">Upload Surat yang
+                        sudah disahkan:</label>
                     <input type="file" name="surat_selesai" id="surat_selesai"
                         class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:bg-gray-50 file:hover:bg-gray-100">
 

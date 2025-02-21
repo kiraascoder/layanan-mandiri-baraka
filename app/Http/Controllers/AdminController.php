@@ -164,11 +164,7 @@ class AdminController extends Controller
     {
         $surat = Surat::with('citizen')->findOrFail($id);
         $template = 'templates.' . $surat->jenis_surat;
-
-
-        // Dekode data_surat di controller dan kirimkan ke view
         $data_surat = json_decode($surat->data_surat);
-
         if (!view()->exists($template)) {
             return abort(404, 'Template tidak ditemukan: ' . $template);
         }
@@ -177,8 +173,9 @@ class AdminController extends Controller
         $pdf = Pdf::loadView($template, [
             'citizen' => $surat->citizen,
             'requestModel' => $surat,
-            'data_surat' => $data_surat // Mengirim data_surat sebagai objek
-        ]);
+            'data_surat' => $data_surat
+        ])->setPaper('legal', 'portrait');
+
 
         // Download PDF
         return $pdf->download('Surat_' . ucfirst(str_replace('_', '', $surat->jenis_surat)) . '.pdf');
@@ -215,12 +212,18 @@ class AdminController extends Controller
         $surat = Surat::findOrFail($id);
         if ($request->hasFile('surat_selesai')) {
             $filePath = $request->file('surat_selesai')->store('surat_selesai', 'public');
-
-            // Update database
             $surat->update([
                 'surat_selesai' => $filePath,
             ]);
         }
         return redirect()->back()->with('success', 'Surat berhasil diupload.');
+    }
+
+    public function updateNoSurat($id, Request $request)
+    {
+        $surat = Surat::findOrFail($id);
+        $surat->no_surat = $request->no_surat;
+        $surat->save();
+        return redirect()->back()->with('success', 'Nomor surat berhasil diperbarui.');
     }
 }
