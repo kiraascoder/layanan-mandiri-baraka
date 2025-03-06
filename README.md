@@ -1,27 +1,89 @@
-Layanan Mandiri
+# Layanan Mandiri
 
-Layanan Mandiri adalah aplikasi berbasis Laravel yang memungkinkan warga untuk mengajukan permohonan surat secara mandiri. Aplikasi ini menggunakan konsep Model-View-Controller (MVC) untuk pengelolaan data dan memiliki fitur autentikasi berbasis peran.
+<p align="center">
+    <a href="https://laravel.com" target="_blank">
+        <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+    </a>
+</p>
 
-Fitur Utama
+## Tentang Proyek
 
-Pengajuan surat secara online
+Layanan Mandiri adalah aplikasi berbasis Laravel yang memungkinkan warga untuk mengajukan berbagai jenis surat secara mandiri dan mempermudah administrasi kelurahan dalam pengelolaan dokumen.
 
-Verifikasi permohonan oleh admin kelurahan
+## Fitur
+- Pengajuan surat secara online
+- Verifikasi oleh admin kelurahan
+- Notifikasi status pengajuan
+- Arsip surat keluar
+- Middleware autentikasi berbasis peran
 
-Pengelolaan surat keluar oleh admin kecamatan
+## Instalasi
 
-Sistem autentikasi berbasis peran (Admin, Pengurus UKM, Mahasiswa)
+1. Clone repositori:
+    ```sh
+    git clone https://github.com/username/layanan-mandiri.git
+    cd layanan-mandiri
+    ```
 
-Penyimpanan file menggunakan Laravel Storage
+2. Instal dependensi:
+    ```sh
+    composer install
+    npm install
+    ```
 
-Teknologi yang Digunakan
+3. Konfigurasi file `.env`:
+    ```sh
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-Framework: Laravel
+4. Konfigurasi database:
+    - Pastikan database sudah dibuat.
+    - Atur koneksi database di `.env`:
+    ```env
+    DB_DATABASE=nama_database
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-Database: MySQL
+5. Jalankan migrasi:
+    ```sh
+    php artisan migrate --seed
+    ```
 
-Authentication: Laravel Auth Middleware
+6. Buat symbolic link untuk penyimpanan:
+    ```sh
+    php artisan storage:link
+    ```
 
-Frontend: Blade Template
+7. Jalankan aplikasi:
+    ```sh
+    php artisan serve
+    ```
 
-Storage: Laravel Filesystem
+## Middleware Autentikasi
+
+Aplikasi ini menggunakan middleware untuk mengontrol akses berdasarkan peran pengguna.
+
+```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class Admin
+{
+    public function handle(Request $request, Closure $next)
+    {
+        if (Auth::user()->role_id != 1) {
+            return abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        }
+        return $next($request);
+    }
+}
+```
+
+## Lisensi
+
+Proyek ini berlisensi di bawah [MIT License](https://opensource.org/licenses/MIT).
