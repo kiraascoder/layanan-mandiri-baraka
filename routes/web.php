@@ -22,7 +22,7 @@ Route::post('/admin/logout', function () {
 })->name('logoutAdmin')->middleware('admin:kelurahan');
 
 // Route Admin Kelurahan
-Route::middleware(['admin:kelurahan'])->prefix('kelurahan')->name('admin.')->group(function () {
+Route::middleware(['admin'])->prefix('kelurahan')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/daftar-penduduk', [AdminController::class, 'showDaftarPenduduk'])->name('daftar-penduduk');
     Route::get('/management-surat', [AdminController::class, 'showSurat'])->name('management-surat');
@@ -91,3 +91,14 @@ Route::post('/admin/kecamatan/logout', function () {
     Auth::logout();
     return redirect('/admin/login');
 })->name('logoutSuperAdmin')->middleware('admin:superadmin');
+
+
+Route::get('/file/{filename}', function ($filename) {
+    $path = storage_path('app/public/persyaratan/ket_domisili/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return Response::file($path);
+});

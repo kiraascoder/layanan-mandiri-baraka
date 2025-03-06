@@ -179,7 +179,9 @@
             <tr>
                 <td>Tempat /Tanggal Lahir</td>
                 <td>:</td>
-                <td>{{ $data_surat->tempat_lahir_suami }}, {{ $data_surat->tanggal_lahir_suami }}</td>
+                <td>{{ $data_surat->tempat_lahir_suami }},
+                    {{ \Carbon\Carbon::parse($data_surat->tanggal_lahir_suami)->locale('id')->translatedFormat('j F Y') }}
+                </td>
             </tr>
 
             <tr>
@@ -190,7 +192,9 @@
             <tr>
                 <td>Tempat /Tanggal Lahir</td>
                 <td>:</td>
-                <td>{{ $data_surat->tempat_lahir_istri }}, {{ $data_surat->tanggal_lahir_istri }}</td>
+                <td>{{ $data_surat->tempat_lahir_istri }},
+                    {{ \Carbon\Carbon::parse($data_surat->tanggal_lahir_istri)->locale('id')->translatedFormat('j F Y') }}
+                </td>
             </tr>
         </table>
         <p class="indent" style="text-align: justify"> adalah

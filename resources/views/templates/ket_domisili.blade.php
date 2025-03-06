@@ -166,7 +166,9 @@
             <tr>
                 <td>Tempat /Tanggal Lahir</td>
                 <td>:</td>
-                <td>{{ $data_surat->tempat_lahir }}, {{ $data_surat->tanggal_lahir }}</td>
+                <td>{{ $data_surat->tempat_lahir }},
+                    {{ \Carbon\Carbon::parse($data_surat->tanggal_lahir)->locale('id')->translatedFormat('j F Y') }}
+                </td>
             </tr>
             <tr>
                 <td>NIK</td>
