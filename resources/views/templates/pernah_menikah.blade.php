@@ -150,33 +150,56 @@
 
     <div style="text-align: center;">
         Nomor:
-        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/{{ $tanggalSekarang }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
+        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
     </div>
+
 
     <!-- Isi Surat -->
     <div class="content">
-        <p style="text-indent: 40px; margin-top: 20px; line-height: 1.5; text-align: justify;">Yang Bertanda tangan di
-            bawah ini Lurah
-            Tomenawa Kecamatan
-            Baraka Kabupaten
-            Enrekang
-            menerangkan bahwa
-            saudara <strong>{{ $data_surat->nama_suami }} </strong> Lahir di {{ $data_surat->tempat_lahir_suami }}, pada
-            tanggal
-            {{ \Carbon\Carbon::parse($data_surat->tanggal_lahir_suami)->locale('id')->translatedFormat('d F Y') }} dan
-            saudari
-            <strong>{{ $data_surat->nama_istri }} </strong> Lahir Di {{ $data_surat->tempat_lahir_istri }}, Pada
-            Tanggal
-            {{ \Carbon\Carbon::parse($data_surat->tanggal_lahir_istri)->locale('id')->translatedFormat('d F Y') }}
-            adalah
+        <p>Yang bertanda tangan di bawah ini :</p>
+        <table class="identitas container-table">
+            <tr>
+                <td>Nama</td>
+                <td>:</td>
+                <td>DAHLAN RENDEN, S.Pd</td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>:</td>
+                <td>LURAH TOMENAWA</td>
+            </tr>
+        </table>
+        <p>Dengan ini menyatakan dengan sesungguhnya bahwa :</p>
+        <table class="identitas container-table">
+            <tr>
+                <td>Nama Suami</td>
+                <td>:</td>
+                <td>{{ $data_surat->nama_suami }}</td>
+            </tr>
+            <tr>
+                <td>Tempat /Tanggal Lahir</td>
+                <td>:</td>
+                <td>{{ $data_surat->tempat_lahir_suami }}, {{ $data_surat->tanggal_lahir_suami }}</td>
+            </tr>
+
+            <tr>
+                <td>Nama Istri</td>
+                <td>:</td>
+                <td>{{ $data_surat->nama_istri }}</td>
+            </tr>
+            <tr>
+                <td>Tempat /Tanggal Lahir</td>
+                <td>:</td>
+                <td>{{ $data_surat->tempat_lahir_istri }}, {{ $data_surat->tanggal_lahir_istri }}</td>
+            </tr>
+        </table>
+        <p class="indent" style="text-align: justify"> adalah
             Suami Istri yang sah dan beralamat Lingk. {{ $data_surat->alamat }}, Kelurahan Tomenawa Kecamatan
-            Enrekang berdasarkan KK dengan Nomor {{ $data_surat->no_kk }}.
-        </p>
+            Baraka berdasarkan KK dengan Nomor {{ $data_surat->no_kk }}.</p>
         <p class="indent" style="margin-top: 20px">Demikian Surat keterangan ini diberikan kepada yang bersangkutan
             untuk dipergunakan
             sebagaimana mestinya.</p>
     </div>
-
     <!-- Tanda Tangan -->
     <div class="signature-section">
         <p>Rumbo, {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>

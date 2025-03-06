@@ -7,8 +7,16 @@
         <div class="caption">
             <h1 class="text-3xl font-bold mt-4">Daftar Penduduk</h1>
             <p>Informasi Penduduk</p>
+            @if (session('success'))
+                <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
-        <div class="mt-4 mb-4">
+        <div class="mt-4 flex justify-between items-center">
+            <div class="text-white">
+                {{ $citizens->links() }}
+            </div>
             <a href="{{ route('admin.daftar-penduduk.tambah-penduduk') }}"
                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#3E7B27] hover:bg-gray-600 rounded-lg">
                 Tambah Penduduk

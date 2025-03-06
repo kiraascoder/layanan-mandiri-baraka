@@ -150,7 +150,7 @@
 
     <div style="text-align: center;">
         Nomor:
-        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/{{ $tanggalSekarang }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
+        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
     </div>
 
     <!-- Isi Surat -->

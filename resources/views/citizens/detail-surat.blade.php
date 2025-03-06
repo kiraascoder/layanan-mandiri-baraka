@@ -28,7 +28,6 @@
                     <p class="text-sm text-gray-600 capitalize"><strong>Status Surat:</strong> {{ $surat->status ?? '-' }}
                     </p>
                 </div>
-
                 <div>
                     <p class="text-sm text-gray-600"><strong>Dokumen:</strong></p>
                     @if ($surat->file_persyaratan)

@@ -34,23 +34,22 @@ class AdminController extends Controller
     {
         return view('admin.tambah-penduduk');
     }
-
     public function showDaftarPenduduk()
     {
         $kelurahanId = Auth::user()->kelurahan_id;
         if (!$kelurahanId) {
             return back()->withErrors(['error' => 'Admin tidak memiliki kelurahan yang valid!']);
         }
-        $citizens = Citizen::where('kelurahan_id', $kelurahanId)->get();
-
+        $citizens = Citizen::where('kelurahan_id', $kelurahanId)->paginate(10);
         return view('admin.daftar-penduduk', compact('citizens'));
     }
+
 
 
     public function showSurat()
     {
         $kelurahanId = Auth::user()->kelurahan_id;
-        $surats = Surat::where('kelurahan_id', $kelurahanId)->get();
+        $surats = Surat::where('kelurahan_id', $kelurahanId)->paginate(10);
         return view('admin.management-surat', compact('surats'));
     }
 
@@ -192,12 +191,10 @@ class AdminController extends Controller
         }
 
         $surat->status = $request->status;
-
-        // Jika status ditolak, simpan alasan penolakan
         if ($request->status == 'ditolak') {
             $surat->alasan_reject = $request->alasan_reject ?? 'Tidak ada alasan diberikan';
         } else {
-            $surat->alasan_reject = null; // Reset alasan jika bukan ditolak
+            $surat->alasan_reject = null;
         }
 
         $surat->save();
@@ -221,8 +218,22 @@ class AdminController extends Controller
 
     public function updateNoSurat($id, Request $request)
     {
+
+        $request->validate(
+            [
+                'no_surat' => 'required|unique:surats,no_surat,' . $id,
+            ],
+            [
+                'no_surat.required' => 'Nomor Surat Tidak Boleh Kosong',
+                'no_surat.unique' => 'Nomor Surat Sudah Ada'
+            ]
+        );
+
         $surat = Surat::findOrFail($id);
         $surat->no_surat = $request->no_surat;
+
+
+
         $surat->save();
         return redirect()->back()->with('success', 'Nomor surat berhasil diperbarui.');
     }

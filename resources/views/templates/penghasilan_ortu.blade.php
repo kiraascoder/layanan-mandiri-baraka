@@ -157,7 +157,7 @@
 
     <div style="text-align: center;">
         Nomor:
-        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/{{ $tanggalSekarang }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
+        {{ $requestModel->no_surat ?? 'Belum ada nomor surat' }}/KLT/{{ $bulanRomawi[$bulanSekarang] }}/{{ $tahunSekarang }}
     </div>
 
     <!-- Isi Surat -->
@@ -244,7 +244,8 @@
     <div style="text-align: center; width: 100%;">
         <div class="signature-section" style="line-height: 3;">
             <p>Orang Tua/Wali</p>
-            <p style="margin-top: 80px; font-weight: bold; text-decoration: underline;">Muslimin</p>
+            <p style="margin-top: 80px; font-weight: bold; text-decoration: underline;">{{ $data_surat->nama_ayah }}
+            </p>
         </div>
         <div class="signature-section">
             <p>Rumbo, {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>

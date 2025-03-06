@@ -24,11 +24,8 @@
                 <h3 class="text-lg font-semibold text-[#EFE3C2] mb-4">Syarat Surat Keterangan Penghasilan Orang Tua</h3>
 
                 <div class="space-y-4">
-                    <!-- Dokumen Pendukung -->
                     <div>
-                        <label class="block text-sm text-[#EFE3C2]">Dokumen Pendukung</label>
-                        <p class="block text-sm text-[#EFE3C2]">- KTP</p>
-                        <p class="block text-sm text-[#EFE3C2]">- Kartu Keluarga</p>
+                        <label class="block text-sm text-[#EFE3C2]">Kartu Keluarga</label>
                         <input type="file" name="file_persyaratan" id="file_persyaratan"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>
@@ -76,10 +73,15 @@
 
                     <div>
                         <label class="block text-sm text-[#EFE3C2]">Jenis Kelamin</label>
-                        <input type="text" name="data_surat[jenis_kelamin]" id="jenis kelamin"
+                        <select name="data_surat[jenis_kelamin]" id="jenis_kelamin"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan Jenis Kelamin" min="0" required>
+                            required>
+                            <option value="" selected>-- Pilih Jenis Kelamin --</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
                     </div>
+
 
                     <div>
                         <label class="block text-sm text-[#EFE3C2]">Pekerjaan</label>

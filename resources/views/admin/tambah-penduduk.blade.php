@@ -112,9 +112,13 @@
             <!-- Kewarganegaraan -->
             <div>
                 <label class="block text-sm text-[#EFE3C2]">Kewarganegaraan</label>
-                <input type="text" name="kewarganegaraan" id="kewarganegaraan"
+                <select name="kewarganegaraan" id="kewarganegaraan"
                     class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Masukkan Kewarganegaraan" required>
+                    required>
+                    <option value="" selected>-- Pilih Kewarganegaraan --</option>
+                    <option value="WNI">WNI</option>
+                    <option value="WNA">WNA</option>
+                </select>
             </div>
 
             <!-- Golongan Darah -->

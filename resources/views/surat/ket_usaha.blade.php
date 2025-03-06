@@ -21,20 +21,16 @@
             @csrf
             <input type="hidden" name="jenis_surat" value="ket_usaha">
 
-            <div id="form_jaminan_kematian">
+            <div id="form_ket_usaha">
                 <h3 class="text-lg font-semibold text-[#EFE3C2] mb-4">Syarat Surat Keterangan Usaha</h3>
 
                 <div class="space-y-4">
-                    <!-- Dokumen Pendukung -->
                     <div>
-                        <label class="block text-sm text-[#EFE3C2]">Dokumen Pendukung</label>
-                        <p class="text-sm text-[#EFE3C2]">- KTP</p>
-                        <p class="text-sm text-[#EFE3C2]">- Kartu Keluarga</p>
+                        <label class="block text-sm text-[#EFE3C2]">Kartu Keluarga</label>
                         <input type="file" name="file_persyaratan" id="file_persyaratan"
                             class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>
                     </div>
-
                     <div>
                         <label for="no_hp" class="block text-sm text-[#EFE3C2]">Nomor HP Aktif</label>
                         <input type="text" name="no_hp" id="no_hp"
